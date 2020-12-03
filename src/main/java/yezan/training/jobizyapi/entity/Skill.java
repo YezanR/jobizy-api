@@ -1,10 +1,19 @@
 package yezan.training.jobizyapi.entity;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NonNull;
 
 @Data
-@RequiredArgsConstructor
 public class Skill {
-    private final String name;
+
+    @NonNull
+    private String name;
+
+    public Skill(@NonNull String name) {
+        setName(name);
+    }
+
+    public void setName(String name) {
+        this.name = name.toLowerCase();
+    }
 }

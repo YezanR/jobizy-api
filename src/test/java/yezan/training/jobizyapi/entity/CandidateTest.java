@@ -11,7 +11,7 @@ import java.util.Set;
 public class CandidateTest {
 
     @Test
-    public void addExperience() {
+    public void addExperience_GivenExperience_ShouldAddIt() {
         Candidate candidate = new Candidate();
         Experience experience = new Experience(new Skill("Java"), 50);
         candidate.addExperience(
@@ -23,7 +23,17 @@ public class CandidateTest {
     }
 
     @Test
-    public void matchesJob() {
+    public void addExperience_GivenSkillAndMonthsOfExperience_ShouldAddAsExperience() {
+        Candidate candidate = new Candidate();
+        candidate.addExperience(new Skill("PHP"), 45);
+
+        Experience expectedExperience = new Experience(new Skill("PHP"), 45);
+        assertEquals(candidate.getExperiences().size(), 1);
+        assertTrue(candidate.getExperiences().contains(expectedExperience));
+    }
+
+    @Test
+    public void matches_GivenJobWithRequirementsAndCandidateWithMatchingExperiences_ShouldReturnTrue() {
         Job job = new Job();
         Set<SkillRequirement> requirements = new HashSet<>(Arrays.asList(
                 new SkillRequirement(new Skill("Java"), 36),
@@ -32,9 +42,9 @@ public class CandidateTest {
         ));
         job.setSkillRequirements(requirements);
         Candidate candidate = new Candidate();
-        candidate.addExperience(new Experience(new Skill("Java"), 50));
-        candidate.addExperience(new Experience(new Skill("Python"), 36));
-        candidate.addExperience(new Experience(new Skill("Jira"), 12));
+        candidate.addExperience(new Skill("Java"), 50);
+        candidate.addExperience(new Skill("Python"), 36);
+        candidate.addExperience(new Skill("Jira"), 12);
 
         assertTrue(candidate.matches(job));
     }

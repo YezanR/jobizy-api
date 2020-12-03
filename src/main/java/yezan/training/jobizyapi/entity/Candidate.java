@@ -35,4 +35,8 @@ public class Candidate {
 
         return true;
     }
+
+    public void addExperience(Skill skill, int monthsOfExperience) {
+        experiences.add(new Experience(skill, monthsOfExperience));
+    }
 }
