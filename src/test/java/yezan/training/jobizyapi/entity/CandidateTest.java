@@ -23,7 +23,7 @@ public class CandidateTest {
     }
 
     @Test
-    public void addExperience_GivenSkillAndMonthsOfExperience_ShouldAddAsExperience() {
+    public void addExperience_GivenSkillAndMonthsOfExperience_ShouldAddIt() {
         Candidate candidate = new Candidate();
         candidate.addExperience(new Skill("PHP"), 45);
 
@@ -47,5 +47,38 @@ public class CandidateTest {
         candidate.addExperience(new Skill("Jira"), 12);
 
         assertTrue(candidate.matches(job));
+    }
+
+    @Test
+    public void matches_GivenJobWithRequirementsAndCandidateWithLessSkills_ShouldReturnFalse() {
+        Job job = new Job();
+        Set<SkillRequirement> requirements = new HashSet<>(Arrays.asList(
+                new SkillRequirement(new Skill("Java"), 36),
+                new SkillRequirement(new Skill("Python"), 12),
+                new SkillRequirement(new Skill("Jira"), 8)
+        ));
+        job.setSkillRequirements(requirements);
+        Candidate candidate = new Candidate();
+        candidate.addExperience(new Skill("Java"), 50);
+        candidate.addExperience(new Skill("Python"), 36);
+
+        assertFalse(candidate.matches(job));
+    }
+
+    @Test
+    public void matches_GivenJobWithRequirementsAndCandidateWithLessMonthsOfExperience_ShouldReturnFalse() {
+        Job job = new Job();
+        Set<SkillRequirement> requirements = new HashSet<>(Arrays.asList(
+                new SkillRequirement(new Skill("Java"), 36),
+                new SkillRequirement(new Skill("Python"), 12),
+                new SkillRequirement(new Skill("Jira"), 8)
+        ));
+        job.setSkillRequirements(requirements);
+        Candidate candidate = new Candidate();
+        candidate.addExperience(new Skill("Java"), 50);
+        candidate.addExperience(new Skill("Python"), 8);
+        new SkillRequirement(new Skill("Jira"), 12);
+
+        assertFalse(candidate.matches(job));
     }
 }
