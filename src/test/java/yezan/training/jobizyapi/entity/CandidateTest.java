@@ -33,52 +33,72 @@ public class CandidateTest {
     }
 
     @Test
-    public void matches_GivenJobWithRequirementsAndCandidateWithMatchingExperiences_ShouldReturnTrue() {
+    public void matchesJob_GivenJobWithRequirementsAndCandidateWithMatchingExperiences_ShouldReturnTrue() {
         Job job = new Job();
         Set<SkillRequirement> requirements = new HashSet<>(Arrays.asList(
                 new SkillRequirement(new Skill("Java"), 36),
                 new SkillRequirement(new Skill("Python"), 12),
                 new SkillRequirement(new Skill("Jira"), 8)
         ));
-        job.setSkillRequirements(requirements);
+        job.addAllSkillRequirement(requirements);
         Candidate candidate = new Candidate();
         candidate.addExperience(new Skill("Java"), 50);
         candidate.addExperience(new Skill("Python"), 36);
         candidate.addExperience(new Skill("Jira"), 12);
 
-        assertTrue(candidate.matches(job));
+        assertTrue(candidate.matchesJob(job));
     }
 
     @Test
-    public void matches_GivenJobWithRequirementsAndCandidateWithLessSkills_ShouldReturnFalse() {
+    public void matchesJob_GivenJobWithRequirementsAndCandidateWithLessSkills_ShouldReturnFalse() {
         Job job = new Job();
         Set<SkillRequirement> requirements = new HashSet<>(Arrays.asList(
                 new SkillRequirement(new Skill("Java"), 36),
                 new SkillRequirement(new Skill("Python"), 12),
                 new SkillRequirement(new Skill("Jira"), 8)
         ));
-        job.setSkillRequirements(requirements);
+        job.addAllSkillRequirement(requirements);
         Candidate candidate = new Candidate();
         candidate.addExperience(new Skill("Java"), 50);
         candidate.addExperience(new Skill("Python"), 36);
 
-        assertFalse(candidate.matches(job));
+        assertFalse(candidate.matchesJob(job));
     }
 
     @Test
-    public void matches_GivenJobWithRequirementsAndCandidateWithLessMonthsOfExperience_ShouldReturnFalse() {
+    public void matchesJob_GivenJobWithRequirementsAndCandidateWithLessMonthsOfExperience_ShouldReturnFalse() {
         Job job = new Job();
         Set<SkillRequirement> requirements = new HashSet<>(Arrays.asList(
                 new SkillRequirement(new Skill("Java"), 36),
                 new SkillRequirement(new Skill("Python"), 12),
                 new SkillRequirement(new Skill("Jira"), 8)
         ));
-        job.setSkillRequirements(requirements);
+        job.addAllSkillRequirement(requirements);
         Candidate candidate = new Candidate();
         candidate.addExperience(new Skill("Java"), 50);
         candidate.addExperience(new Skill("Python"), 8);
         new SkillRequirement(new Skill("Jira"), 12);
 
-        assertFalse(candidate.matches(job));
+        assertFalse(candidate.matchesJob(job));
+    }
+
+    @Test
+    public void applyForJob() {
+        Candidate candidate = new Candidate();
+        Job job = new Job();
+
+        JobApplication actualJobApplication = candidate.applyForJob(job);
+        JobApplication expectedJobApplication = new JobApplication(candidate, job);
+        assertEquals(expectedJobApplication, actualJobApplication);
+    }
+
+    @Test
+    public void equals_GivenSameId_ShouldReturnTrue() {
+        Candidate candidate = new Candidate();
+        candidate.setId(12L);
+        candidate.addExperience(new Skill("Python"), 15);
+        Candidate candidate1 = new Candidate();
+        candidate1.setId(12L);
+        assertEquals(candidate, candidate1);
     }
 }

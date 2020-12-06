@@ -8,6 +8,8 @@ import java.util.List;
 @Data
 public class Candidate {
 
+    private long id;
+
     private final List<Experience> experiences;
 
     public Candidate() {
@@ -18,7 +20,7 @@ public class Candidate {
         experiences.add(experience);
     }
 
-    public boolean matches(Job job) {
+    public boolean matchesJob(Job job) {
         for (SkillRequirement requirement: job.getSkillRequirements()) {
             boolean requirementFulfilled = false;
             for (Experience experience: experiences) {
@@ -38,5 +40,21 @@ public class Candidate {
 
     public void addExperience(Skill skill, int monthsOfExperience) {
         experiences.add(new Experience(skill, monthsOfExperience));
+    }
+
+    public JobApplication applyForJob(Job job) {
+        return new JobApplication(this, job);
+    }
+
+    public boolean equals(Object otherObject) {
+        if (this == otherObject) {
+            return true;
+        }
+
+        if (!(otherObject instanceof Candidate)) {
+            return false;
+        }
+
+        return getId() == ((Candidate) otherObject).getId();
     }
 }
