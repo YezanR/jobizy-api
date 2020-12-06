@@ -3,6 +3,7 @@ package yezan.training.jobizyapi.entity;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import yezan.training.jobizyapi.exception.JobApplicationException;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -83,22 +84,26 @@ public class CandidateTest {
     }
 
     @Test
-    public void applyForJob() {
-        Candidate candidate = new Candidate();
-        Job job = new Job();
+    public void applyForJob_GivenMatchingJob_ShouldReturnJobApplication() {
+        Candidate candidate = new Candidate("john", "doe", "john.doe@example.com");
+        Job job = new Job("Lead Java developer");
 
         JobApplication actualJobApplication = candidate.applyForJob(job);
+
         JobApplication expectedJobApplication = new JobApplication(candidate, job);
         assertEquals(expectedJobApplication, actualJobApplication);
     }
 
     @Test
-    public void equals_GivenSameId_ShouldReturnTrue() {
-        Candidate candidate = new Candidate();
-        candidate.setId(12L);
-        candidate.addExperience(new Skill("Python"), 15);
-        Candidate candidate1 = new Candidate();
-        candidate1.setId(12L);
-        assertEquals(candidate, candidate1);
+    public void applyForJob_GivenNonMatchingJob_ShouldThrowException() {
+        Throwable exception = assertThrows(JobApplicationException.class, () -> {
+            Candidate candidate = new Candidate("john", "doe", "john.doe@example.com");
+            Job job = new Job("Lead Java developer");
+            job.addSkillRequirement(new SkillRequirement(new Skill("Python"), 36));
+
+            candidate.applyForJob(job);
+        });
+
+        assertTrue(exception.getMessage().toLowerCase().contains("job requirements not met"));
     }
 }

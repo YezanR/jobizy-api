@@ -1,19 +1,30 @@
 package yezan.training.jobizyapi.entity;
 
 import lombok.Data;
+import yezan.training.jobizyapi.exception.JobApplicationException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
 public class Candidate {
 
-    private long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private Date birthDate;
 
-    private final List<Experience> experiences;
+    private final List<Experience> experiences = new ArrayList<>();
+
+    public Candidate(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 
     public Candidate() {
-        experiences = new ArrayList<>();
+
     }
 
     public void addExperience(Experience experience) {
@@ -43,18 +54,10 @@ public class Candidate {
     }
 
     public JobApplication applyForJob(Job job) {
+        if (!matchesJob(job)) {
+            throw new JobApplicationException("Job requirements not met");
+        }
+
         return new JobApplication(this, job);
-    }
-
-    public boolean equals(Object otherObject) {
-        if (this == otherObject) {
-            return true;
-        }
-
-        if (!(otherObject instanceof Candidate)) {
-            return false;
-        }
-
-        return getId() == ((Candidate) otherObject).getId();
     }
 }

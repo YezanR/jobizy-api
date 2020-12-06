@@ -2,31 +2,45 @@ package yezan.training.jobizyapi.entity;
 
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Data
 public class Job {
-    private long id;
-    private final Set<SkillRequirement> skillRequirements = new HashSet<>();
+    private String title;
+
+    public Job() {
+
+    }
+
+    public Job(String title) {
+        this.title = title;
+    }
+
+    private final Map<String, SkillRequirement> skillRequirements = new HashMap<>();
 
     public void addSkillRequirement(SkillRequirement skillRequirement) {
-        skillRequirements.add(skillRequirement);
+        Skill skill = skillRequirement.getSkill();
+
+        if (skillRequirements.get(skill.getName()) != null) {
+            throw new IllegalArgumentException("Duplicate skill, skill '" + skill + "' " +
+                    "has already a defined requirement");
+        }
+
+        skillRequirements.put(skill.getName(), skillRequirement);
     }
 
     public void addAllSkillRequirement(Set<SkillRequirement> skillRequirements) {
-        this.skillRequirements.addAll(skillRequirements);
+        skillRequirements.forEach((this::addSkillRequirement));
     }
 
-    public boolean equals(Object otherObject) {
-        if (this == otherObject) {
-            return true;
-        }
+    public SkillRequirement getSkillRequirementBySkillName(String skillName) {
+        return skillRequirements.get(skillName);
+    }
 
-        if (!(otherObject instanceof Job)) {
-            return false;
-        }
-
-        return getId() == ((Job) otherObject).getId();
+    public Set<SkillRequirement> getSkillRequirements() {
+        return new HashSet<>(skillRequirements.values());
     }
 }
