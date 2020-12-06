@@ -1,30 +1,35 @@
 package yezan.training.jobizyapi.entity;
 
 import lombok.Data;
+import lombok.NonNull;
 import yezan.training.jobizyapi.exception.JobApplicationException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Data
 public class Candidate {
 
+    @NonNull
     private String firstName;
+
+    @NonNull
     private String lastName;
+
+    @NonNull
     private String email;
-    private Date birthDate;
+
+    @NonNull
+    private LocalDate birthDate;
 
     private final List<Experience> experiences = new ArrayList<>();
 
-    public Candidate(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
-
-    public Candidate() {
-
+    public Candidate(String firstName, String lastName, String email, LocalDate birthDate) {
+        setFirstName(firstName);
+        setLastName(lastName);
+        setEmail(email);
+        setBirthDate(birthDate);
     }
 
     public void addExperience(Experience experience) {

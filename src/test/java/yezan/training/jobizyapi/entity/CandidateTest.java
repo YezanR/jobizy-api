@@ -4,6 +4,7 @@ package yezan.training.jobizyapi.entity;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import yezan.training.jobizyapi.exception.JobApplicationException;
+import yezan.training.jobizyapi.factory.CandidateFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,7 +14,7 @@ public class CandidateTest {
 
     @Test
     public void addExperience_GivenExperience_ShouldAddIt() {
-        Candidate candidate = new Candidate();
+        Candidate candidate = CandidateFactory.createDummy();
         Experience experience = new Experience(new Skill("Java"), 50);
         candidate.addExperience(
                 experience
@@ -25,7 +26,7 @@ public class CandidateTest {
 
     @Test
     public void addExperience_GivenSkillAndMonthsOfExperience_ShouldAddIt() {
-        Candidate candidate = new Candidate();
+        Candidate candidate = CandidateFactory.createDummy();
         candidate.addExperience(new Skill("PHP"), 45);
 
         Experience expectedExperience = new Experience(new Skill("PHP"), 45);
@@ -42,7 +43,7 @@ public class CandidateTest {
                 new SkillRequirement(new Skill("Jira"), 8)
         ));
         job.addAllSkillRequirement(requirements);
-        Candidate candidate = new Candidate();
+        Candidate candidate = CandidateFactory.createDummy();
         candidate.addExperience(new Skill("Java"), 50);
         candidate.addExperience(new Skill("Python"), 36);
         candidate.addExperience(new Skill("Jira"), 12);
@@ -59,7 +60,7 @@ public class CandidateTest {
                 new SkillRequirement(new Skill("Jira"), 8)
         ));
         job.addAllSkillRequirement(requirements);
-        Candidate candidate = new Candidate();
+        Candidate candidate = CandidateFactory.createDummy();
         candidate.addExperience(new Skill("Java"), 50);
         candidate.addExperience(new Skill("Python"), 36);
 
@@ -75,7 +76,7 @@ public class CandidateTest {
                 new SkillRequirement(new Skill("Jira"), 8)
         ));
         job.addAllSkillRequirement(requirements);
-        Candidate candidate = new Candidate();
+        Candidate candidate = CandidateFactory.createDummy();
         candidate.addExperience(new Skill("Java"), 50);
         candidate.addExperience(new Skill("Python"), 8);
         new SkillRequirement(new Skill("Jira"), 12);
@@ -85,7 +86,7 @@ public class CandidateTest {
 
     @Test
     public void applyForJob_GivenMatchingJob_ShouldReturnJobApplication() {
-        Candidate candidate = new Candidate("john", "doe", "john.doe@example.com");
+        Candidate candidate = CandidateFactory.createDummy();
         Job job = new Job("Lead Java developer");
 
         JobApplication actualJobApplication = candidate.applyForJob(job);
@@ -97,7 +98,7 @@ public class CandidateTest {
     @Test
     public void applyForJob_GivenNonMatchingJob_ShouldThrowException() {
         Throwable exception = assertThrows(JobApplicationException.class, () -> {
-            Candidate candidate = new Candidate("john", "doe", "john.doe@example.com");
+            Candidate candidate = CandidateFactory.createDummy();
             Job job = new Job("Lead Java developer");
             job.addSkillRequirement(new SkillRequirement(new Skill("Python"), 36));
 
