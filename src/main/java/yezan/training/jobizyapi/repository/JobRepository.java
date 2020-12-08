@@ -1,6 +1,6 @@
 package yezan.training.jobizyapi.repository;
 
-import yezan.training.jobizyapi.entity.Job;
+import yezan.training.jobizyapi.domain.Job;
 
 import java.util.List;
 

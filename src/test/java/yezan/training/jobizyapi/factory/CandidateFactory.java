@@ -1,6 +1,6 @@
 package yezan.training.jobizyapi.factory;
 
-import yezan.training.jobizyapi.entity.Candidate;
+import yezan.training.jobizyapi.domain.Candidate;
 
 import java.time.LocalDate;
 

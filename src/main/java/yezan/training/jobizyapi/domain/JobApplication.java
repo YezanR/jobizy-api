@@ -1,4 +1,4 @@
-package yezan.training.jobizyapi.entity;
+package yezan.training.jobizyapi.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

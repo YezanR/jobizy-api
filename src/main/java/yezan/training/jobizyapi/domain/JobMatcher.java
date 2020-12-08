@@ -1,9 +1,7 @@
-package yezan.training.jobizyapi.service;
+package yezan.training.jobizyapi.domain;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import yezan.training.jobizyapi.entity.Candidate;
-import yezan.training.jobizyapi.entity.Job;
 import yezan.training.jobizyapi.repository.JobRepository;
 
 import java.util.ArrayList;

@@ -1,9 +1,7 @@
 package yezan.training.jobizyapi.factory;
 
-import yezan.training.jobizyapi.entity.Job;
-import yezan.training.jobizyapi.entity.SkillRequirement;
-
-import java.util.Set;
+import yezan.training.jobizyapi.domain.Job;
+import yezan.training.jobizyapi.domain.SkillRequirement;
 
 public class JobFactory {
 

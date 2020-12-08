@@ -3,10 +3,7 @@ package yezan.training.jobizyapi.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import yezan.training.jobizyapi.entity.Candidate;
-import yezan.training.jobizyapi.entity.Job;
-import yezan.training.jobizyapi.entity.Skill;
-import yezan.training.jobizyapi.entity.SkillRequirement;
+import yezan.training.jobizyapi.domain.*;
 import yezan.training.jobizyapi.factory.CandidateFactory;
 import yezan.training.jobizyapi.factory.JobFactory;
 import yezan.training.jobizyapi.repository.JobRepository;
