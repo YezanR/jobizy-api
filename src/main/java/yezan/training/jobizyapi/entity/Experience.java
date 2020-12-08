@@ -1,10 +1,8 @@
 package yezan.training.jobizyapi.entity;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
 public class Experience {
     private final Skill skill;
     private final int monthsOfExperience;
