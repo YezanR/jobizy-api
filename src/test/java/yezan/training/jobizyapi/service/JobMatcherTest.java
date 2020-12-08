@@ -17,10 +17,8 @@ import java.util.List;
 
 public class JobMatcherTest {
 
-    private JobMatcher jobMatcher;
-
     @Test
-    public void findAllMatchingJobs() {
+    public void findAllMatchingJobs_GivenSomeJobsAndCandidate_ShouldReturnMatchingJobs() {
 
         Candidate candidate = CandidateFactory.createDummy();
         candidate.addExperience(new Skill("Java"), 42);
@@ -29,7 +27,7 @@ public class JobMatcherTest {
         candidate.addExperience(new Skill("SQL"), 24);
 
         JobRepository jobRepository = new FakeJobRepository();
-        jobMatcher = new JobMatcher(jobRepository);
+        JobMatcher jobMatcher = new JobMatcher(jobRepository);
         List<Job> jobs = jobMatcher.findAllMatchingJobs(candidate);
 
         assertEquals(Collections.singletonList(
