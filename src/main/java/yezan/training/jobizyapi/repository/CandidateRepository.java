@@ -1,7 +1,10 @@
 package yezan.training.jobizyapi.repository;
 
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import yezan.training.jobizyapi.domain.Candidate;
 
-public interface CandidateRepository {
-    Candidate findById(long id);
+@Repository
+public interface CandidateRepository extends CrudRepository<Candidate, Long> {
+
 }
