@@ -17,9 +17,8 @@ public class JobMatcher {
 
     public List<Job> findAllMatchingJobs(Candidate candidate) {
         List<Job> matchingJobs = new ArrayList<>();
-        List<Job> allJobs = jobRepository.findAll();
 
-        allJobs.forEach(job -> {
+        jobRepository.findAll().forEach(job -> {
             if (candidate.matchesJob(job)) {
                 matchingJobs.add(job);
             }

@@ -9,14 +9,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import java.util.List;
 import static org.mockito.Mockito.*;
+
 import yezan.training.jobizyapi.domain.Job;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
+import yezan.training.jobizyapi.factory.CandidateFactory;
 import yezan.training.jobizyapi.factory.JobFactory;
 import yezan.training.jobizyapi.service.CandidateCrudService;
+import yezan.training.jobizyapi.service.JobCrudService;
 import yezan.training.jobizyapi.service.JobMatcher;
 
 import javax.persistence.EntityNotFoundException;
@@ -32,6 +35,9 @@ public class JobControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @MockBean
+    JobCrudService jobCrudService;
 
     @Test
     public void findAllMatchingJobs_shouldReturnJobs() throws Exception {
@@ -50,6 +56,24 @@ public class JobControllerTest {
         when(candidateCrudService.findById(anyLong())).thenThrow(new EntityNotFoundException());
 
         mockMvc.perform(get("/jobs/matchingCandidate/1"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void applyForJob_ShouldReturnOK() throws Exception {
+        when(candidateCrudService.findById(anyLong())).thenReturn(CandidateFactory.createDummy());
+        when(jobCrudService.findById(anyLong())).thenReturn(new Job());
+
+        mockMvc.perform(post("/jobs/12/apply/1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void applyForJob_GivenInvalidJob_ShouldReturnNotFoundStatus() throws Exception {
+        when(candidateCrudService.findById(anyLong())).thenReturn(CandidateFactory.createDummy());
+        when(jobCrudService.findById(anyLong())).thenThrow(new EntityNotFoundException());
+
+        mockMvc.perform(post("/jobs/12/apply/1"))
                 .andExpect(status().isNotFound());
     }
 }

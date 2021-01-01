@@ -3,16 +3,27 @@ package yezan.training.jobizyapi.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import yezan.training.jobizyapi.domain.*;
 import yezan.training.jobizyapi.factory.CandidateFactory;
 import yezan.training.jobizyapi.factory.JobFactory;
 import yezan.training.jobizyapi.repository.JobRepository;
-
+import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@ExtendWith(MockitoExtension.class)
 public class JobMatcherTest {
+
+    @Mock
+    JobRepository jobRepository;
+
+    @InjectMocks
+    JobMatcher jobMatcher;
 
     @Test
     public void findAllMatchingJobs_GivenSomeJobsAndCandidate_ShouldReturnMatchingJobs() {
@@ -23,8 +34,8 @@ public class JobMatcherTest {
         candidate.addExperience(new Skill("Kubernetes"), 2);
         candidate.addExperience(new Skill("SQL"), 24);
 
-        JobRepository jobRepository = new FakeJobRepository();
-        JobMatcher jobMatcher = new JobMatcher(jobRepository);
+        when(jobRepository.findAll()).thenReturn(jobsForFindAllMatchingJob());
+
         List<Job> jobs = jobMatcher.findAllMatchingJobs(candidate);
 
         assertEquals(Collections.singletonList(
@@ -34,12 +45,8 @@ public class JobMatcherTest {
                 )
         ), jobs);
     }
-}
 
-class FakeJobRepository implements JobRepository {
-
-    @Override
-    public List<Job> findAll() {
+    private List<Job> jobsForFindAllMatchingJob() {
         ArrayList<Job> jobs = new ArrayList<>();
 
         jobs.add(

@@ -1,11 +1,10 @@
 package yezan.training.jobizyapi.repository;
 
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import yezan.training.jobizyapi.domain.Job;
 
-import java.util.List;
-
 @Repository
-public interface JobRepository {
-    List<Job> findAll();
+public interface JobRepository extends CrudRepository<Job, Long> {
+
 }
