@@ -8,7 +8,6 @@ import yezan.training.jobizyapi.domain.Job;
 import yezan.training.jobizyapi.service.CandidateCrudService;
 import yezan.training.jobizyapi.service.JobCrudService;
 import yezan.training.jobizyapi.service.JobMatcher;
-
 import java.util.List;
 
 @RestController

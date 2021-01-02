@@ -2,6 +2,7 @@ package yezan.training.jobizyapi.domain;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,7 +10,11 @@ import java.util.Set;
 
 @Data
 public class Job {
+
+    @NotEmpty
     private String title;
+
+    private final Map<String, SkillRequirement> skillRequirements = new HashMap<>();
 
     public Job() {
 
@@ -18,8 +23,6 @@ public class Job {
     public Job(String title) {
         this.title = title;
     }
-
-    private final Map<String, SkillRequirement> skillRequirements = new HashMap<>();
 
     public void addSkillRequirement(SkillRequirement skillRequirement) {
         Skill skill = skillRequirement.getSkill();
