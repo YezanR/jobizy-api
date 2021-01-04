@@ -5,6 +5,7 @@ import yezan.training.jobizyapi.domain.Job;
 import yezan.training.jobizyapi.repository.JobRepository;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,12 +36,18 @@ public class JobCrudServiceTest {
     @Test
     public void create_GivenValidJob_ShouldAddItToRepository() {
         JobRepository jobRepository = mock(JobRepository.class);
-        Job savedJob = new Job("Backend developer");
-        when(jobRepository.save(any())).thenReturn(savedJob);
+        Job job = new Job("Backend developer");
+        when(jobRepository.save(any())).thenReturn(job);
 
         JobCrudService jobCrudService = new JobCrudService(jobRepository);
-        Job createdJob = jobCrudService.create(new Job());
+        Job createdJob = jobCrudService.create(job);
 
-        assertEquals(savedJob, createdJob);
+        assertEquals(job, createdJob);
+    }
+
+    @Test
+    public void create_InValidJob_ShouldThrowException() {
+        JobCrudService jobCrudService = new JobCrudService(null);
+        assertThrows(ConstraintViolationException.class, () -> jobCrudService.create(new Job()));
     }
 }
