@@ -48,7 +48,26 @@ public class JobCrudServiceTest {
 
     @Test
     public void create_GivenInValidJob_ShouldThrowException() {
-        JobCrudService jobCrudService = new JobCrudService(null);
+        JobCrudService jobCrudService = new JobCrudService(mock(JobRepository.class));
         assertThrows(ConstraintViolationException.class, () -> jobCrudService.create(new Job()));
+    }
+
+    @Test
+    public void update_GivenValidJob_ShouldUpdateItInRepositoryAndReturnIt() {
+        JobRepository jobRepository = mock(JobRepository.class);
+        Job job = new Job(12L, "Frontend developer");
+        when(jobRepository.save(any())).thenReturn(job);
+
+        JobCrudService jobCrudService = new JobCrudService(jobRepository);
+        Job updatedJob = jobCrudService.update(job);
+
+        verify(jobRepository, times(1)).save(job);
+        assertEquals(job, updatedJob);
+    }
+
+    @Test
+    public void update_GivenInValidJob_ShouldThrowException() {
+        JobCrudService jobCrudService = new JobCrudService(mock(JobRepository.class));
+        assertThrows(ConstraintViolationException.class, () -> jobCrudService.update(new Job("Product owner")));
     }
 }

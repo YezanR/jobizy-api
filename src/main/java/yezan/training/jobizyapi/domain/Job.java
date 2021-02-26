@@ -1,7 +1,10 @@
 package yezan.training.jobizyapi.domain;
 
 import lombok.Data;
+import yezan.training.jobizyapi.validation.group.JobCreation;
+import yezan.training.jobizyapi.validation.group.JobUpdate;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,7 +14,10 @@ import java.util.Set;
 @Data
 public class Job {
 
-    @NotEmpty
+    @Min(value = 1, groups = JobUpdate.class)
+    private long id;
+
+    @NotEmpty(groups = {JobCreation.class, JobUpdate.class})
     private String title;
 
     private final Map<String, SkillRequirement> skillRequirements = new HashMap<>();
@@ -22,6 +28,11 @@ public class Job {
 
     public Job(String title) {
         this.title = title;
+    }
+
+    public Job(long id, String title) {
+        this(title);
+        this.id = id;
     }
 
     public void addSkillRequirement(SkillRequirement skillRequirement) {

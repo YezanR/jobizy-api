@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import yezan.training.jobizyapi.domain.Job;
 import yezan.training.jobizyapi.repository.JobRepository;
+import yezan.training.jobizyapi.validation.group.JobCreation;
+import yezan.training.jobizyapi.validation.group.JobUpdate;
+
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -27,11 +30,19 @@ public class JobCrudService {
     }
 
     public Job create(Job job) {
-        Set<ConstraintViolation<Job>> violations = validator.validate(job);
+        validateJob(job, JobCreation.class);
+        return jobRepository.save(job);
+    }
+
+    public Job update(Job job) {
+        validateJob(job, JobUpdate.class);
+        return jobRepository.save(job);
+    }
+
+    private void validateJob(Job job, Class<?>... groupClasses) {
+        Set<ConstraintViolation<Job>> violations = validator.validate(job, groupClasses);
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
-
-        return jobRepository.save(job);
     }
 }
