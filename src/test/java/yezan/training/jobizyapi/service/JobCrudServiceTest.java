@@ -34,7 +34,7 @@ public class JobCrudServiceTest {
     }
 
     @Test
-    public void create_GivenValidJob_ShouldAddItToRepository() {
+    public void create_GivenValidJob_ShouldAddItToRepositoryAndReturnIt() {
         JobRepository jobRepository = mock(JobRepository.class);
         Job job = new Job("Backend developer");
         when(jobRepository.save(any())).thenReturn(job);
@@ -42,11 +42,12 @@ public class JobCrudServiceTest {
         JobCrudService jobCrudService = new JobCrudService(jobRepository);
         Job createdJob = jobCrudService.create(job);
 
+        verify(jobRepository, times(1)).save(job);
         assertEquals(job, createdJob);
     }
 
     @Test
-    public void create_InValidJob_ShouldThrowException() {
+    public void create_GivenInValidJob_ShouldThrowException() {
         JobCrudService jobCrudService = new JobCrudService(null);
         assertThrows(ConstraintViolationException.class, () -> jobCrudService.create(new Job()));
     }
