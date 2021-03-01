@@ -23,6 +23,12 @@ public class JobFactory {
         return job;
     }
 
+    public static Job createWithSkillRequirements(long id, String title, SkillRequirement... skillRequirements) {
+        Job job = createWithSkillRequirements(title, skillRequirements);
+        job.setId(id);
+        return job;
+    }
+
     public static List<Job> generateMany() {
         ArrayList<Job> jobs = new ArrayList<>();
 

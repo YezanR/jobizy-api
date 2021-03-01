@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import yezan.training.jobizyapi.domain.Job;
+import yezan.training.jobizyapi.domain.SkillRequirement;
 import yezan.training.jobizyapi.repository.JobRepository;
+import yezan.training.jobizyapi.repository.SkillRequirementRepository;
 import yezan.training.jobizyapi.validation.group.JobCreation;
 import yezan.training.jobizyapi.validation.group.JobUpdate;
 
@@ -13,7 +15,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ import java.util.Set;
 public class JobCrudService {
 
     private final JobRepository jobRepository;
+    private final SkillRequirementRepository skillRequirementRepository;
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -44,5 +49,14 @@ public class JobCrudService {
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
+    }
+
+    public void delete(Job job) {
+        List<Long> relatedSkillRequirementIds = job.getSkillRequirements().stream()
+                .map(SkillRequirement::getId)
+                .collect(Collectors.toList());
+        skillRequirementRepository.deleteByIdIn(relatedSkillRequirementIds);
+
+        jobRepository.delete(job);
     }
 }
